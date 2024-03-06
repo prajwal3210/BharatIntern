@@ -27,9 +27,11 @@ export default function Login() {
             />
           </div>
           <div className="flex justify-center px-1 py-1">
-            <button>Log In</button>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Log In
+            </button>
           </div>
-          <Link to="/Register" className=" font-bold text-center  px-3">
+          <Link to="/Signup" className=" font-bold text-center  px-3">
             <p className="px-4 py-3">
               <u>⬅Back to Registration</u>
             </p>
