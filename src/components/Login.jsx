@@ -26,8 +26,8 @@ export default function Login() {
               type="password"
             />
           </div>
-          <div className="flex justify-center px-1 py-1">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <div className="flex justify-center py-5">
+            <button className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded-full">
               Log In
             </button>
           </div>

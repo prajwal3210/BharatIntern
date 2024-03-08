@@ -55,6 +55,9 @@ export default function Signup() {
       confirmPassword: "",
       termsChecked: false,
     });
+    setTimeout(() => {
+      window.location.href = "/login"; // or whatever the path to the login page is
+    }, 2000);
   };
 
   return (
