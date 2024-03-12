@@ -7,7 +7,12 @@ import UserModel from "./models/user.js";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
 
 mongoose.connect("mongodb://127.0.0.1:27017");
 
@@ -24,12 +29,29 @@ app.post("/Login", (req, res) => {
     .then((user) => {
       if (user) {
         if (formData.password === user.password) {
-          res.json("user found");
+          const accessToken = jwt.sign(
+            { email: formData.email },
+            "jwt-access-token-secret-key",
+            { expiresIn: "1m" }
+          );
+          const refreshToken = jwt.sign(
+            { email: formData.email },
+            "jwt-refresh-token-secret-key",
+            { expiresIn: "5m" }
+          );
+          res.cookie("accessToken", accessToken, { maxAge: 60000 });
+          res.cookie("refreshToken", refreshToken, {
+            maxAge: 300000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+          });
+          return res.json({ Login: true });
         } else {
           res.json("pass wrong");
         }
       } else {
-        res.json("no record");
+        res.json({ Login: false, Message: "no record" });
       }
     })
     .catch((err) => res.json(err));

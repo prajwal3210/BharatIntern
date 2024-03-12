@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,13 +18,22 @@ export default function Login() {
       [name]: value,
     }));
   };
+  axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.email || !formData.password) {
+      setError("All fields are required");
+      return;
+    }
     axios
       .post("http://localhost:3001/Login", formData)
       .then((res) => {
-        console.log(res.data);
-        //navigate("/Login");
+        if (res.data.Login) {
+          navigate("/PostList");
+        } else {
+          setError("Wrong Password");
+          navigate("/Login");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -39,6 +49,7 @@ export default function Login() {
           className=" bg-slate-400 shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
           <h1 className=" font-bold text-center py-3">Login Page</h1>
+          {error && <p style={{ color: "red" }}>{error}</p>}
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Email
